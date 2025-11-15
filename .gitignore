@@ -1,0 +1,6 @@
+*.env
+*.env.local
+.ai-interview/.env
+ai-agent/.env
+agent-starter-python/.env
+agent-starter-python/.env.local
