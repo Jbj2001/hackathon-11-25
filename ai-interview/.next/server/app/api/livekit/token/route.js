@@ -1,0 +1,12 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/livekit/token/route.js")
+R.c("server/chunks/[root-of-the-server]__c3d1307c._.js")
+R.c("server/chunks/0183b_next_db169aef._.js")
+R.c("server/chunks/0183b_@bufbuild_protobuf_dist_esm_26e3f68a._.js")
+R.c("server/chunks/0183b_@livekit_protocol_dist_index_mjs_1a83da33._.js")
+R.c("server/chunks/a4a8c_jose_dist_node_esm_3ec70682._.js")
+R.c("server/chunks/0183b_zod_v3_08fea56b._.js")
+R.c("server/chunks/0183b_8bff91fe._.js")
+R.c("server/chunks/[root-of-the-server]__6924a6c5._.js")
+R.m("[project]/hackathon-11-25/ai-interview/.next-internal/server/app/api/livekit/token/route/actions.js [app-rsc] (server actions loader, ecmascript)")
+R.m("[project]/hackathon-11-25/ai-interview/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/hackathon-11-25/ai-interview/src/app/api/livekit/token/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/hackathon-11-25/ai-interview/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/hackathon-11-25/ai-interview/src/app/api/livekit/token/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

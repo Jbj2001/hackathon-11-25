@@ -1,0 +1,43 @@
+{
+  "pages": {
+    "/interview/page": [
+      "static/chunks/[root-of-the-server]__787f3e86._.css",
+      "static/chunks/0183b_a6507957._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_trpc_e4ff78ac._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_app_layout_tsx_36d2c31f._.js",
+      "static/chunks/0183b_next_dist_client_components_builtin_global-error_0c997fff.js",
+      "static/chunks/0183b_livekit-client_dist_livekit-client_esm_mjs_cf7dd666._.js",
+      "static/chunks/0183b_@livekit_components-react_dist_5a8ce971._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_app_interview_page_tsx_3743ccf2._.js",
+      "static/chunks/0183b_@livekit_components-styles_dist_general_index_c682c8d7.css",
+      "static/chunks/hackathon-11-25_ai-interview_src_app_interview_page_tsx_0c997fff._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_291c3e13._.js",
+      "static/chunks/0183b_next_dist_compiled_react-dom_b3e84fd5._.js",
+      "static/chunks/0183b_next_dist_compiled_next-devtools_index_94121678.js",
+      "static/chunks/0183b_next_dist_compiled_8df3a382._.js",
+      "static/chunks/0183b_next_dist_client_76d25197._.js",
+      "static/chunks/0183b_next_dist_99b4e7ab._.js",
+      "static/chunks/0183b_@swc_helpers_cjs_983b330d._.js",
+      "static/chunks/hackathon-11-25_ai-interview_a0ff3932._.js",
+      "static/chunks/turbopack-hackathon-11-25_ai-interview_26c21478._.js"
+    ],
+    "/page": [
+      "static/chunks/[root-of-the-server]__787f3e86._.css",
+      "static/chunks/0183b_a6507957._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_trpc_e4ff78ac._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_app_layout_tsx_36d2c31f._.js",
+      "static/chunks/0183b_next_dist_client_components_builtin_global-error_0c997fff.js",
+      "static/chunks/hackathon-11-25_ai-interview_564b4f78._.js",
+      "static/chunks/hackathon-11-25_ai-interview_src_app_page_tsx_0c997fff._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_291c3e13._.js",
+      "static/chunks/0183b_next_dist_compiled_react-dom_b3e84fd5._.js",
+      "static/chunks/0183b_next_dist_compiled_next-devtools_index_94121678.js",
+      "static/chunks/0183b_next_dist_compiled_8df3a382._.js",
+      "static/chunks/0183b_next_dist_client_76d25197._.js",
+      "static/chunks/0183b_next_dist_99b4e7ab._.js",
+      "static/chunks/0183b_@swc_helpers_cjs_983b330d._.js",
+      "static/chunks/hackathon-11-25_ai-interview_a0ff3932._.js",
+      "static/chunks/turbopack-hackathon-11-25_ai-interview_26c21478._.js"
+    ]
+  }
+}
