@@ -121,9 +121,17 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.PostScalarFieldEnum = {
+exports.Prisma.JobScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  jobTitle: 'jobTitle',
+  companyName: 'companyName',
+  description: 'description',
+  requirements: 'requirements',
+  companyInfo: 'companyInfo',
+  location: 'location',
+  jobType: 'jobType',
+  salaryRange: 'salaryRange',
+  sourceUrl: 'sourceUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -138,9 +146,14 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Job: 'Job'
 };
 
 /**
