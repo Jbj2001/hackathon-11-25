@@ -1,6 +1,0 @@
-{
-  "/api/livekit/token/route": "app/api/livekit/token/route.js",
-  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
-  "/interview/page": "app/interview/page.js",
-  "/page": "app/page.js"
-}
