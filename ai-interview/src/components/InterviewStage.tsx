@@ -10,15 +10,83 @@ import "@livekit/components-styles";
 import BottomBar from "~/components/BottomBar";
 import { Track } from "livekit-client";
 import { VideoTrack, AudioTrack } from "@livekit/components-react";
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface InterviewStageProps {
   onTranscription: (transcriptions: Array<{text: string, role: string, timestamp: number}>) => void;
+  onInterviewEnd: (transcript: string) => void;
 }
 
-export default function InterviewStage({ onTranscription }: InterviewStageProps) {
+export default function InterviewStage({ onTranscription, onInterviewEnd }: InterviewStageProps) {
   const { localParticipant } = useLocalParticipant();
   const remoteParticipants = useRemoteParticipants();
+
+  const router = useRouter();
+  const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+  const [transcriptHistory, setTranscriptHistory] = useState<Array<{text: string, role: string, timestamp: number}>>([]);
+  
+  // Get transcriptions
+  const allTracks = useTracks([{ 
+    source: Track.Source.Microphone,
+    withPlaceholder: false 
+  }]);
+  const micTrackRef = allTracks[0];
+  const { segments: userTranscriptions } = useTrackTranscription(micTrackRef);
+  const { agentTranscriptions } = useVoiceAssistant();
+  
+  // Format transcriptions with timestamps
+  const formattedTranscriptions = useMemo(() => {
+    const user = userTranscriptions.map(segment => ({
+      text: segment.text,
+      role: 'user' as const,
+      // Use current time as timestamp since segment doesn't have one
+      timestamp: 'timestamp' in segment ? segment.timestamp : Date.now()
+    }));
+    
+    const agent = agentTranscriptions.map(segment => ({
+      text: segment.text,
+      role: 'assistant' as const,
+      // Use current time as timestamp since segment doesn't have one
+      timestamp: 'timestamp' in segment ? segment.timestamp : Date.now()
+    }));
+    
+    // Sort by timestamp to maintain chronological order
+    return [...user, ...agent].sort((a, b) => a.timestamp - b.timestamp);
+  }, [userTranscriptions, agentTranscriptions]);
+
+  // Handle interview end
+  const handleEndInterview = useCallback(async () => {
+    try {
+      const fullTranscript = formattedTranscriptions
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .map(t => `${t.role === 'user' ? 'You' : 'Interviewer'}: ${t.text}`)
+        .join('\n\n');
+      
+      // Call the onInterviewEnd callback if provided
+      if (onInterviewEnd) {
+        await onInterviewEnd(fullTranscript);
+      }
+      
+      setIsInterviewComplete(true);
+      
+      // Navigate to results page with transcript as URL parameter
+      const encodedTranscript = encodeURIComponent(fullTranscript);
+      router.push(`/interview/results?transcript=${encodedTranscript}`);
+    } catch (error) {
+      console.error('Error ending interview:', error);
+      // Still navigate even if there's an error, but log it
+      const encodedTranscript = encodeURIComponent('Error generating transcript');
+      router.push(`/interview/results?transcript=${encodedTranscript}`);
+    }
+  }, [formattedTranscriptions, onInterviewEnd, router]);
+
+  // Update parent component with transcriptions
+  useEffect(() => {
+    if (formattedTranscriptions.length > 0) {
+      onTranscription(formattedTranscriptions);
+    }
+  }, [formattedTranscriptions, onTranscription]);
 
   // Get all tracks
   const tracks = useTracks(
@@ -33,37 +101,12 @@ export default function InterviewStage({ onTranscription }: InterviewStageProps)
   const agentParticipant = remoteParticipants[0]; // The AI agent
   const agentCameraTrack = agentParticipant?.getTrackPublication(Track.Source.Camera);
   const agentMicTrack = agentParticipant?.getTrackPublication(Track.Source.Microphone);
-const { agentTranscriptions } = useVoiceAssistant();
-  const allTracks = useTracks([{ 
-    source: Track.Source.Microphone,
-    withPlaceholder: false 
-  }]);
-  const micTrackRef = allTracks[0];
-  const { segments: userTranscriptions } = useTrackTranscription(micTrackRef);
-  const updateTranscriptions = useCallback(() => {
-    const agentTranscripts = agentTranscriptions.map((val: any) => ({
-      text: val.text,
-      role: 'assistant',
-      timestamp: val.timestamp || Date.now()
-    }));
 
-    const userTranscripts = userTranscriptions.map((val: any) => ({
-      text: val.text,
-      role: 'user',
-      timestamp: val.timestamp || Date.now()
-    }));
-
-    const combined = [...agentTranscripts, ...userTranscripts]
-      .sort((a, b) => a.timestamp - b.timestamp);
-    
-    onTranscription(combined);
-  }, [agentTranscriptions, userTranscriptions, onTranscription]);
-
-  // Call updateTranscriptions whenever transcriptions change
+  // Update parent component when transcriptions change
   useEffect(() => {
-    updateTranscriptions();
-  }, [updateTranscriptions]);
-  
+    onTranscription(formattedTranscriptions);
+  }, [formattedTranscriptions, onTranscription]);
+
   return (
     <div className="flex h-full w-full flex-col">
       {/* Room Audio Renderer */}
@@ -139,7 +182,7 @@ const { agentTranscriptions } = useVoiceAssistant();
 
       {/* Bottom Controls */}
       <div className="flex-shrink-0">
-        <BottomBar />
+  <BottomBar onEndInterview={handleEndInterview} />
       </div>
     </div>
   );
