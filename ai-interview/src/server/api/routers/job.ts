@@ -253,5 +253,42 @@ export const jobRouter = createTRPCRouter({
       }
     }),
 
+  checkIfJobExists: publicProcedure
+    .input(
+      z.object({
+        url: z.string().url("Please enter a valid URL"),
+      })
+    )
+    .query(async ({ input }) => {
+      try {
+        const job = await db.job.findFirst({
+          where: {
+            sourceUrl: input.url,
+          },
+        });
+
+        if (!job) {
+          return {
+            exists: false,
+            job: null,
+          };
+        }
+
+        return {
+          exists: true,
+          job,
+        };
+      } catch (error) {
+        console.error("Error checking job by URL:", error);
+
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to check job by URL",
+        });
+      }
+    }),
+
+
+
 
 });
