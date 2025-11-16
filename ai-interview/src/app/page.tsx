@@ -52,15 +52,17 @@ export default function Home() {
         <div className="w-full space-y-12 relative z-10">
           {/* Title Section */}
           <div className="text-center space-y-4">
-            <div className="inline-block">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                <h1 className="text-5xl sm:text-6xl font-bold mb-3 tracking-tight">
-                  Interview Hero
-                </h1>
-              </div>
+          <div className="inline-block relative">
+        {/* Animated gradient background behind text */}
+        <div className="absolute inset-0 rounded-xl blur-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 opacity-30 animate-pulse"></div>
+
+              <h1 className="relative text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg">
+                Interview Hero
+              </h1>
             </div>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Your AI agent that helps you ace your interviews 
+
+            <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto">
+              Your AI agent that helps you <span className="font-semibold text-indigo-600">ace your interviews</span>
             </p>
           </div>
 
