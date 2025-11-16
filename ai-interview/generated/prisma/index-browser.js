@@ -136,9 +136,27 @@ exports.Prisma.JobScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.InterviewScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  roomName: 'roomName',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  duration: 'duration',
+  transcript: 'transcript',
+  feedback: 'feedback',
+  score: 'score',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -151,9 +169,16 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
-  Job: 'Job'
+  Job: 'Job',
+  Interview: 'Interview'
 };
 
 /**

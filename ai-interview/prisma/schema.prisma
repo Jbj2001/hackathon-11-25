@@ -25,8 +25,33 @@ model Job {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
+    interviews   Interview[]
+
     @@index([jobTitle])
     @@index([companyName])
+}
+
+model Interview {
+  id           String   @id @default(cuid())
+  jobId        String
+  job          Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  roomName     String
+  startTime    DateTime
+  endTime      DateTime?
+  duration     Int?     // Duration in seconds
+  
+  transcript   Json     // Store the full transcript as JSON
+  
+  // Optional: Store analysis/feedback
+  feedback     String?  @db.Text
+  score        Float?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@index([jobId])
+  @@index([roomName])
 }
 
 

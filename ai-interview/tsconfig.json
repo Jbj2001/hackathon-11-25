@@ -32,9 +32,8 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./src/*"
-      ]
+      "~/*": ["./src/*"],
+      "@/generated/*": ["generated/*"]
     }
   },
   "include": [

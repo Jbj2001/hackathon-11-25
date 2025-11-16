@@ -108,9 +108,27 @@ exports.Prisma.JobScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.InterviewScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  roomName: 'roomName',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  duration: 'duration',
+  transcript: 'transcript',
+  feedback: 'feedback',
+  score: 'score',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -123,9 +141,16 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
-  Job: 'Job'
+  Job: 'Job',
+  Interview: 'Interview'
 };
 /**
  * Create the Client
@@ -156,7 +181,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
@@ -166,7 +191,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -175,13 +199,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Job {\n  id           String   @id @default(uuid())\n  jobTitle     String\n  companyName  String\n  description  String\n  requirements String[]\n  companyInfo  String\n  location     String?\n  jobType      String?\n  salaryRange  String?\n  sourceUrl    String?  @unique\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  @@index([jobTitle])\n  @@index([companyName])\n}\n",
-  "inlineSchemaHash": "96dd372a25b5e77454c9d95621524fdd88312a9166148ce1e64f31a618927822",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Job {\n  id           String   @id @default(uuid())\n  jobTitle     String\n  companyName  String\n  description  String\n  requirements String[]\n  companyInfo  String\n  location     String?\n  jobType      String?\n  salaryRange  String?\n  sourceUrl    String?  @unique\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  interviews Interview[]\n\n  @@index([jobTitle])\n  @@index([companyName])\n}\n\nmodel Interview {\n  id    String @id @default(cuid())\n  jobId String\n  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)\n\n  roomName  String\n  startTime DateTime\n  endTime   DateTime?\n  duration  Int? // Duration in seconds\n\n  transcript Json // Store the full transcript as JSON\n\n  // Optional: Store analysis/feedback\n  feedback String? @db.Text\n  score    Float?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([jobId])\n  @@index([roomName])\n}\n",
+  "inlineSchemaHash": "f788e411559abdd4e6272dcc3272395cba994641de2529217dd6d0b919eeae84",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Job\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requirements\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyInfo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"salaryRange\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sourceUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Job\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobTitle\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requirements\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"companyInfo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"salaryRange\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sourceUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"interviews\",\"kind\":\"object\",\"type\":\"Interview\",\"relationName\":\"InterviewToJob\"}],\"dbName\":null},\"Interview\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"job\",\"kind\":\"object\",\"type\":\"Job\",\"relationName\":\"InterviewToJob\"},{\"name\":\"roomName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startTime\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"endTime\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"duration\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"transcript\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"feedback\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

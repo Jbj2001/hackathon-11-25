@@ -3,16 +3,18 @@
 import { useState } from 'react';
 import SplashCursor from '../components/SplashCursor';
 import { api } from '~/trpc/react'; 
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [url, setUrl] = useState('');
+  const router = useRouter();
 
   // tRPC mutation for starting interview
   const startInterview = api.job.submitJobUrl.useMutation({
     onSuccess: (data) => {
       console.log('Interview started successfully:', data);
-      // You can redirect to interview page or handle success here
-      // router.push(`/interview/${data.id}`);
+      // Go to interview page
+      router.push(`/interview/${data.job.id}`);
     },
     onError: (error) => {
       console.error('Error starting interview:', error);
@@ -65,7 +67,7 @@ export default function Home() {
                         handleStartInterview();
                       }
                     }}
-                    placeholder="https://example.com/job-posting"
+                    placeholder="Enter a job posting URL here"
                     disabled={startInterview.isPending}
                     className="flex-1 px-5 py-4 border border-white/60 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white/70 backdrop-blur-sm shadow-sm text-gray-800 placeholder:text-gray-400 disabled:opacity-50"
                   />
