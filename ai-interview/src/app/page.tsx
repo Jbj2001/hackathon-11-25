@@ -21,9 +21,27 @@ export default function Home() {
       alert('Failed to start interview. Please check the URL and try again.');
     },
   });
-  const handleStartInterview = () => {
+
+  const {
+    data: existingJob,
+    refetch: checkIfJobExists,
+  } = api.job.checkIfJobExists.useQuery(
+    { url },
+    { enabled: false }
+  );
+
+  const handleStartInterview = async () => {
     if (!url) return;
+
+    const result = await checkIfJobExists();
+
+    if (result.data?.exists && result.data.job) {
+      router.push(`/interview/${result.data.job.id}`);
+    }
+  
     
+    
+
     startInterview.mutate({ url });
   };
 
