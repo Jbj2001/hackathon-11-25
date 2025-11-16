@@ -55,12 +55,12 @@ export default function Home() {
             <div className="inline-block">
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 <h1 className="text-5xl sm:text-6xl font-bold mb-3 tracking-tight">
-                  AI Interview Prep
+                  Interview Hero
                 </h1>
               </div>
             </div>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Paste a job posting URL and practice with AI-powered interview simulations
+              Your AI agent that helps you ace your interviews 
             </p>
           </div>
 
