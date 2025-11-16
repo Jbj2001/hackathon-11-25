@@ -10,9 +10,17 @@ import { useParams, useRouter } from "next/navigation";
 import BottomBar from "~/components/BottomBar";
 import { Track } from "livekit-client";
 import InterviewStage from "~/components/InterviewStage";
+import { Menu } from 'lucide-react';
+import { TranscriptPanel } from "~/components/TranscriptPanel";
 
 
-export default function InterviewPage() {
+interface Props {
+    onTranscription: (transcriptions: any[]) => void;
+     openSidebar: () => void;
+  closeSidebar: () => void;
+}
+
+export default function InterviewPage(props: Props) {
   const params = useParams();
   const router = useRouter();
   const jobId = params.jobId as string;
@@ -21,13 +29,19 @@ export default function InterviewPage() {
   const [roomName] = useState(() => `interview-${Date.now()}`);
   const [participantName] = useState(() => `user-${Math.random().toString(36).substring(7)}`);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
 
+  const [transcriptions, setTranscriptions] = useState<Array<{
+  text: string;
+  role: string;
+  timestamp: number;
+}>>([]);
   // Fetch job data
   const { data: jobData, isLoading: isLoadingJob, error: jobError } = api.job.getJobById.useQuery(
     { id: jobId },
     { enabled: !!jobId }
   );
-
+  
   useEffect(() => {
     // Only fetch token after we have job data
     if (!jobData) return;
@@ -123,32 +137,48 @@ export default function InterviewPage() {
   return (
     <div className="h-screen w-screen overflow-hidden">
       <LiveKitRoom
-        video={true}
-        audio={true}
-        token={token}
-        serverUrl={serverUrl}
-        data-lk-theme="default"
-        style={{ height: "100dvh" }}
-        onDisconnected={() => {
-          console.log("Disconnected from room");
-          // Optionally redirect to results page
-          // router.push(`/interview/${jobId}/results`);
-        }}
+  video={true}
+  audio={true}
+  token={token}
+  serverUrl={serverUrl}
+  data-lk-theme="default"
+  style={{ height: "100dvh" }}
+  onDisconnected={() => {
+    console.log("Disconnected from room");
+  }}
+>
+  <div className="h-full flex flex-col">
+    {/* Header */}
+    <div className="bg-gradient-to-r from-[#2e026d] to-[#15162c] px-6 py-4 shadow-lg flex items-center">
+      <button
+        onClick={() => setShowTranscript(!showTranscript)}
+        className="mr-4 p-2 rounded-full hover:bg-white/10 transition-colors"
+        aria-label="Toggle transcript"
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-[#2e026d] to-[#15162c] px-6 py-4 shadow-lg">
-          <h1 className="text-2xl font-bold text-white">
-            AI Interview - {jobData.jobTitle}
-          </h1>
-          <p className="text-sm text-white/80">
-            {jobData.companyName}
-          </p>
-        </div>
+        <Menu className="h-6 w-6 text-white" />
+      </button>
+      <div>
+        <h1 className="text-2xl font-bold text-white">
+          AI Interview - {jobData.jobTitle}
+        </h1>
+        <p className="text-sm text-white/80">
+          {jobData.companyName}
+        </p>
+      </div>
+    </div>
 
-        {/* Main Interview Stage */}
+    {/* Main content */}
+    <div className="flex-1 relative">
+      <InterviewStage onTranscription={setTranscriptions} />
+    </div>
+  </div>
 
-        <InterviewStage />
-      </LiveKitRoom>
+  <TranscriptPanel 
+    isOpen={showTranscript} 
+    onClose={() => setShowTranscript(false)} 
+    transcriptions={transcriptions}
+  />
+</LiveKitRoom>
     </div>
   );
 }

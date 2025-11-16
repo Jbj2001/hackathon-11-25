@@ -4,14 +4,19 @@ import {
   useLocalParticipant,
   useRemoteParticipants,
   useTracks,
-  RoomAudioRenderer,
+  RoomAudioRenderer, useVoiceAssistant, useTrackTranscription
 } from "@livekit/components-react";
 import "@livekit/components-styles";
 import BottomBar from "~/components/BottomBar";
 import { Track } from "livekit-client";
 import { VideoTrack, AudioTrack } from "@livekit/components-react";
+import { useCallback, useEffect } from 'react';
 
-export default function InterviewStage() {
+interface InterviewStageProps {
+  onTranscription: (transcriptions: Array<{text: string, role: string, timestamp: number}>) => void;
+}
+
+export default function InterviewStage({ onTranscription }: InterviewStageProps) {
   const { localParticipant } = useLocalParticipant();
   const remoteParticipants = useRemoteParticipants();
 
@@ -28,7 +33,37 @@ export default function InterviewStage() {
   const agentParticipant = remoteParticipants[0]; // The AI agent
   const agentCameraTrack = agentParticipant?.getTrackPublication(Track.Source.Camera);
   const agentMicTrack = agentParticipant?.getTrackPublication(Track.Source.Microphone);
+const { agentTranscriptions } = useVoiceAssistant();
+  const allTracks = useTracks([{ 
+    source: Track.Source.Microphone,
+    withPlaceholder: false 
+  }]);
+  const micTrackRef = allTracks[0];
+  const { segments: userTranscriptions } = useTrackTranscription(micTrackRef);
+  const updateTranscriptions = useCallback(() => {
+    const agentTranscripts = agentTranscriptions.map((val: any) => ({
+      text: val.text,
+      role: 'assistant',
+      timestamp: val.timestamp || Date.now()
+    }));
 
+    const userTranscripts = userTranscriptions.map((val: any) => ({
+      text: val.text,
+      role: 'user',
+      timestamp: val.timestamp || Date.now()
+    }));
+
+    const combined = [...agentTranscripts, ...userTranscripts]
+      .sort((a, b) => a.timestamp - b.timestamp);
+    
+    onTranscription(combined);
+  }, [agentTranscriptions, userTranscriptions, onTranscription]);
+
+  // Call updateTranscriptions whenever transcriptions change
+  useEffect(() => {
+    updateTranscriptions();
+  }, [updateTranscriptions]);
+  
   return (
     <div className="flex h-full w-full flex-col">
       {/* Room Audio Renderer */}

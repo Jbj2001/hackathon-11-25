@@ -3513,7 +3513,6 @@ export namespace Prisma {
 
   export type JobWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    sourceUrl?: string
     AND?: JobWhereInput | JobWhereInput[]
     OR?: JobWhereInput[]
     NOT?: JobWhereInput | JobWhereInput[]
@@ -3525,10 +3524,11 @@ export namespace Prisma {
     location?: StringNullableFilter<"Job"> | string | null
     jobType?: StringNullableFilter<"Job"> | string | null
     salaryRange?: StringNullableFilter<"Job"> | string | null
+    sourceUrl?: StringNullableFilter<"Job"> | string | null
     createdAt?: DateTimeFilter<"Job"> | Date | string
     updatedAt?: DateTimeFilter<"Job"> | Date | string
     interviews?: InterviewListRelationFilter
-  }, "id" | "sourceUrl">
+  }, "id">
 
   export type JobOrderByWithAggregationInput = {
     id?: SortOrder

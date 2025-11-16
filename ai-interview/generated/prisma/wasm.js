@@ -163,7 +163,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/danielnovick/Documents/Coding/hackathon-11-25/ai-interview/generated/prisma",
+      "value": "/Users/joshjoseph/Desktop/hackathon-11-25/ai-interview/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -172,12 +172,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "darwin",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/danielnovick/Documents/Coding/hackathon-11-25/ai-interview/prisma/schema.prisma",
+    "sourceFilePath": "/Users/joshjoseph/Desktop/hackathon-11-25/ai-interview/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -199,8 +199,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Job {\n  id           String   @id @default(uuid())\n  jobTitle     String\n  companyName  String\n  description  String\n  requirements String[]\n  companyInfo  String\n  location     String?\n  jobType      String?\n  salaryRange  String?\n  sourceUrl    String?  @unique\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  interviews Interview[]\n\n  @@index([jobTitle])\n  @@index([companyName])\n}\n\nmodel Interview {\n  id    String @id @default(cuid())\n  jobId String\n  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)\n\n  roomName  String\n  startTime DateTime\n  endTime   DateTime?\n  duration  Int? // Duration in seconds\n\n  transcript Json // Store the full transcript as JSON\n\n  // Optional: Store analysis/feedback\n  feedback String? @db.Text\n  score    Float?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([jobId])\n  @@index([roomName])\n}\n",
-  "inlineSchemaHash": "f788e411559abdd4e6272dcc3272395cba994641de2529217dd6d0b919eeae84",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Job {\n  id           String   @id @default(uuid())\n  jobTitle     String\n  companyName  String\n  description  String\n  requirements String[]\n  companyInfo  String\n  location     String?\n  jobType      String?\n  salaryRange  String?\n  sourceUrl    String?\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  interviews Interview[]\n\n  @@index([jobTitle])\n  @@index([companyName])\n}\n\nmodel Interview {\n  id    String @id @default(cuid())\n  jobId String\n  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)\n\n  roomName  String\n  startTime DateTime\n  endTime   DateTime?\n  duration  Int? // Duration in seconds\n\n  transcript Json // Store the full transcript as JSON\n\n  // Optional: Store analysis/feedback\n  feedback String? @db.Text\n  score    Float?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([jobId])\n  @@index([roomName])\n}\n",
+  "inlineSchemaHash": "9ba405349c2bfb85fb79ec690030b6a0bc3b653ac7096a4ee77ab87d65bad7bc",
   "copyEngine": true
 }
 config.dirname = '/'
